@@ -58,8 +58,7 @@ st.sidebar.title("Control Panel")
 fetch_button = st.sidebar.button("Fetch Last 10 Emails")
 refresh_button = st.sidebar.button("Refresh Dashboard")
 if st.sidebar.button("Logout"):
-    if "gmail_creds" in st.session_state:
-        del st.session_state["gmail_creds"]
+    st.session_state.clear()
     st.query_params.clear()
     st.rerun()
 search_term = st.sidebar.text_input("Search by Sender / Subject")
