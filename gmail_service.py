@@ -24,8 +24,7 @@ def authenticate_user():
             }
         },
         scopes=SCOPES,
-        redirect_uri=st.secrets["REDIRECT_URI"],
-        autogenerate_code_verifier=False
+        redirect_uri=st.secrets["REDIRECT_URI"]
     )
 
     auth_url, state = flow.authorization_url(
@@ -34,7 +33,9 @@ def authenticate_user():
         include_granted_scopes="true"
     )
 
+    # Store verifier + state
     st.session_state["oauth_state"] = state
+    st.session_state["code_verifier"] = flow.code_verifier
 
     return auth_url
 def get_user_credentials(auth_code):
@@ -50,13 +51,12 @@ def get_user_credentials(auth_code):
         },
         scopes=SCOPES,
         state=st.session_state.get("oauth_state"),
-        redirect_uri=st.secrets["REDIRECT_URI"],
-        autogenerate_code_verifier=False
+        redirect_uri=st.secrets["REDIRECT_URI"]
     )
 
     flow.fetch_token(
         code=auth_code,
-        client_secret=st.secrets["GOOGLE_CLIENT_SECRET"]
+        code_verifier=st.session_state["code_verifier"]
     )
 
     return flow.credentials

@@ -29,25 +29,35 @@ with open("styles.css") as f:
 # ---------------- GOOGLE AUTH ----------------
 query_params = st.query_params
 
-if "code" not in query_params:
+# If already logged in
+if "gmail_creds" in st.session_state:
+    pass
+
+# If returning from Google login
+elif "code" in query_params:
+    try:
+        code = query_params["code"]
+        creds = get_user_credentials(code)
+        st.session_state.gmail_creds = creds
+
+        # Clear URL params after successful login
+        st.query_params.clear()
+
+        st.rerun()
+
+    except Exception as e:
+        st.error(f"Authentication failed: {str(e)}")
+        st.session_state.clear()
+        st.query_params.clear()
+        st.stop()
+
+# First visit
+else:
     auth_url = authenticate_user()
     st.markdown("## Welcome to InboxIQ")
     st.markdown("Please login with Google to continue.")
     st.markdown(f"[Login with Google]({auth_url})")
     st.stop()
-
-if "gmail_creds" not in st.session_state:
-    try:
-        code = query_params["code"]
-        creds = get_user_credentials(code)
-        st.session_state.gmail_creds = creds
-        st.query_params.clear()
-        st.rerun()
-    except Exception as e:
-        st.error(f"Authentication failed: {str(e)}")
-        st.session_state.clear()
-        st.stop()
-
 # ---------------- HEADER ----------------
 st.title("InboxIQ")
 st.markdown('<p style="font-size: 1.3rem; color: #0f172a;">Enterprise-grade AI email triage, urgency detection, and smart response generation</p>', unsafe_allow_html=True)
