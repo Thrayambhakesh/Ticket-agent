@@ -41,6 +41,7 @@ if "gmail_creds" not in st.session_state:
     creds = get_user_credentials(code)
     st.session_state.gmail_creds = creds
     st.query_params.clear()
+    st.rerun()
 
 # ---------------- HEADER ----------------
 st.title("InboxIQ")

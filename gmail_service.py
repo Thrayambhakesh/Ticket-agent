@@ -25,13 +25,15 @@ def authenticate_user():
         redirect_uri=st.secrets["REDIRECT_URI"]
     )
 
-    auth_url, _ = flow.authorization_url(
+    auth_url, state = flow.authorization_url(
         prompt="consent",
         access_type="offline"
     )
 
-    return auth_url
+    st.session_state["oauth_state"] = state
+    st.session_state["code_verifier"] = flow.code_verifier
 
+    return auth_url
 
 def get_user_credentials(auth_code):
     flow = Flow.from_client_config(
@@ -47,9 +49,12 @@ def get_user_credentials(auth_code):
         redirect_uri=st.secrets["REDIRECT_URI"]
     )
 
-    flow.fetch_token(code=auth_code)
-    return flow.credentials
+    flow.fetch_token(
+        code=auth_code,
+        code_verifier=st.session_state["code_verifier"]
+    )
 
+    return flow.credentials
 
 # ---------------- GMAIL SERVICE ----------------
 def get_gmail_service(credentials=None):
