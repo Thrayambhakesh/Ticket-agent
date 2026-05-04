@@ -2,7 +2,8 @@ import os.path
 import base64
 from email.mime.text import MIMEText
 from google.auth.transport.requests import Request
-from google_auth_oauthlib.flow import InstalledAppFlow
+from google_auth_oauthlib.flow import Flow
+import streamlit as st
 from googleapiclient.discovery import build
 from google.oauth2.credentials import Credentials
 
@@ -11,7 +12,31 @@ SCOPES = [
     "https://www.googleapis.com/auth/gmail.send"
 ]
 
-def get_gmail_service():
+def authenticate_user():
+    flow = Flow.from_client_secrets_file(
+        st.secrets["GOOGLE_CLIENT_SECRETS_FILE"],
+        scopes=SCOPES,
+        redirect_uri=st.secrets["REDIRECT_URI"]
+    )
+
+    auth_url, _ = flow.authorization_url(
+        prompt="consent",
+        access_type="offline"
+    )
+
+    return auth_url
+
+def get_user_credentials(auth_code):
+    flow = Flow.from_client_secrets_file(
+        st.secrets["GOOGLE_CLIENT_SECRETS_FILE"],
+        scopes=SCOPES,
+        redirect_uri=st.secrets["REDIRECT_URI"]
+    )
+
+    flow.fetch_token(code=auth_code)
+    return flow.credentials
+
+"""def get_gmail_service():
     creds = None
     if os.path.exists("token.json"):
         creds = Credentials.from_authorized_user_file("token.json", SCOPES)
@@ -23,15 +48,24 @@ def get_gmail_service():
             flow = InstalledAppFlow.from_client_secrets_file(
                 "credentials.json", SCOPES
             )
-            creds = flow.run_local_server(port=8080)
+            creds = flow.run_local_server(
+                port=8080,
+                access_type="offline",
+                prompt="consent"
+            )
 
         with open("token.json", "w") as token:
             token.write(creds.to_json())
 
-    return build("gmail", "v1", credentials=creds)
+    return build("gmail", "v1", credentials=creds)"""
 
-def fetch_unread_emails():
-    service = get_gmail_service()
+def get_gmail_service(credentials=None):
+    if credentials and credentials.expired and credentials.refresh_token:
+        credentials.refresh(Request())
+    return build("gmail", "v1", credentials=credentials)
+
+def fetch_unread_emails(credentials):
+    service = get_gmail_service(credentials)
     results = service.users().messages().list(
         userId="me",
         labelIds=["INBOX"],
@@ -71,8 +105,8 @@ def fetch_unread_emails():
 
     return emails
 
-def send_email(to, subject, body):
-    service = get_gmail_service()
+def send_email(credentials, to, subject, body):
+    service = get_gmail_service(credentials)
 
     message = MIMEText(body)
     message["to"] = to

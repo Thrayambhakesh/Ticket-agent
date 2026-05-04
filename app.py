@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+from gmail_service import authenticate_user, get_user_credentials
 from gmail_service import (
     fetch_unread_emails,
     send_email,
@@ -11,6 +12,7 @@ from groq_classifier import batch_classify_emails
 from supabase_client import insert_ticket, get_tickets, approve_ticket
 import plotly.express as px
 from datetime import datetime
+
 
 # ---------------- PAGE CONFIG ----------------
 st.set_page_config(
@@ -24,6 +26,22 @@ st.set_page_config(
 with open("styles.css") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
+# ---------------- GOOGLE AUTH ----------------
+query_params = st.query_params
+
+if "code" not in query_params:
+    auth_url = authenticate_user()
+    st.markdown("## Welcome to InboxIQ")
+    st.markdown("Please login with Google to continue.")
+    st.markdown(f"[Login with Google]({auth_url})")
+    st.stop()
+
+if "gmail_creds" not in st.session_state:
+    code = query_params["code"]
+    creds = get_user_credentials(code)
+    st.session_state.gmail_creds = creds
+    st.query_params.clear()
+
 # ---------------- HEADER ----------------
 st.title("InboxIQ")
 st.markdown('<p style="font-size: 1.3rem; color: #0f172a;">Enterprise-grade AI email triage, urgency detection, and smart response generation</p>', unsafe_allow_html=True)
@@ -33,7 +51,11 @@ st.sidebar.title("Control Panel")
 
 fetch_button = st.sidebar.button("Fetch Last 10 Emails")
 refresh_button = st.sidebar.button("Refresh Dashboard")
-
+if st.sidebar.button("Logout"):
+    if "gmail_creds" in st.session_state:
+        del st.session_state["gmail_creds"]
+    st.query_params.clear()
+    st.rerun()
 search_term = st.sidebar.text_input("Search by Sender / Subject")
 
 category_options = [
@@ -55,7 +77,7 @@ show_charts = st.sidebar.checkbox("Show Performance Charts", value=True)
 if fetch_button:
     try:
         with st.spinner("Fetching and processing emails..."):
-            emails = fetch_unread_emails()[:10]
+            emails = fetch_unread_emails(st.session_state.gmail_creds)[:10]
 
             if not emails:
                 st.warning("No unread emails found.")
@@ -75,6 +97,7 @@ if fetch_button:
 
                     ticket_data = {
                         "gmail_id": email["id"],
+                        "user_email": st.session_state.gmail_creds.id_token["email"],
                         "sender": email["sender"],
                         "subject": email["subject"],
                         "body": email["body"][:1500],
@@ -94,7 +117,7 @@ if fetch_button:
 
 # ---------------- LOAD TICKETS ----------------
 try:
-    response = get_tickets()
+    response = get_tickets(st.session_state.gmail_creds.id_token["email"])
     tickets = response.data
 except Exception as e:
     st.error(f"Supabase Error: {str(e)}")
@@ -179,6 +202,7 @@ with tab1:
                     if st.button(f"Approve & Send #{row['id']}"):
                         try:
                             send_email(
+                                st.session_state.gmail_creds,
                                 row["sender"],
                                 f"Re: {row['subject']}",
                                 edited_reply
@@ -191,7 +215,7 @@ with tab1:
                 with colB:
                     if st.button(f"Archive #{row['id']}"):
                         try:
-                            service = get_gmail_service()
+                            service = get_gmail_service(st.session_state.gmail_creds)
                             archive_email(service, row["gmail_id"])
                             st.success("Email archived successfully")
                         except Exception as e:
@@ -200,7 +224,7 @@ with tab1:
                 with colC:
                     if st.button(f"Delete #{row['id']}"):
                         try:
-                            service = get_gmail_service()
+                            service = get_gmail_service(st.session_state.gmail_creds)
                             delete_email(service, row["gmail_id"])
                             st.success("Email deleted successfully")
                         except Exception as e:
@@ -257,7 +281,3 @@ with tab2:
 st.markdown("---")
 st.caption("Built with Streamlit | Gmail API | Groq LLM | Supabase")
 
-if __name__ == "__main__": 
-    import os 
-    port = int(os.environ.get("PORT", 8501)) 
-    os.system(f"streamlit run app.py --server.port {port} --server.address 0.0.0.0")

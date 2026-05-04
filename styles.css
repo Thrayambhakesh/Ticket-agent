@@ -1,151 +1,159 @@
-/* Import modern, elegant font */
-@import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap');
+/* ---------- GOOGLE FONTS ---------- */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@300;400;500;600;700&display=swap');
 
-/* ----------------- GLOBAL ----------------- */
+/* ---------- GLOBAL ---------- */
 html, body, [class*="css"] {
     font-family: 'Inter', sans-serif !important;
     color: #1e293b;
     letter-spacing: -0.01em;
 }
 
-/* Main app background – complex light gradient with subtle texture */
 .stApp {
     background: 
-        radial-gradient(ellipse at 20% 50%, rgba(148, 187, 233, 0.15) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 20%, rgba(196, 181, 253, 0.1) 0%, transparent 50%),
+        radial-gradient(ellipse at 20% 50%, rgba(37, 99, 235, 0.05) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(56, 189, 248, 0.06) 0%, transparent 50%),
         linear-gradient(135deg, #f8fafc 0%, #eef2ff 30%, #f1f5f9 70%, #ffffff 100%);
     background-attachment: fixed;
 }
 
-/* ------- SIDEBAR - GLASS EFFECT ------- */
+/* ---------- SIDEBAR ---------- */
 section[data-testid="stSidebar"] {
-    background: rgba(255, 255, 255, 0.75);
+    background: rgba(255, 255, 255, 0.78);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-right: 1px solid rgba(148, 163, 184, 0.3);
-    box-shadow: 4px 0 30px rgba(0, 0, 0, 0.05);
+    box-shadow: 4px 0 30px rgba(0, 0, 0, 0.04);
 }
 
-section[data-testid="stSidebar"] .stMarkdown h1,
-section[data-testid="stSidebar"] .stMarkdown h2,
-section[data-testid="stSidebar"] .stMarkdown h3 {
-    color: #0f172a !important;
-    font-weight: 700;
+section[data-testid="stSidebar"] h1,
+section[data-testid="stSidebar"] h2,
+section[data-testid="stSidebar"] h3 {
+    color: #2563eb !important;
+    font-family: 'Orbitron', sans-serif;
+    text-shadow: 0 0 10px rgba(37, 99, 235, 0.2);
+    text-align: center;
 }
 
-section[data-testid="stSidebar"] .stMarkdown p,
 section[data-testid="stSidebar"] label {
     color: #334155 !important;
 }
 
-/* Sidebar buttons */
 section[data-testid="stSidebar"] .stButton > button {
-    width: 100%;
-    background: linear-gradient(145deg, #ffffff, #f1f5f9);
-    color: #1e293b;
+    background: #ffffff;
+    color: #2563eb !important;
     border: 1px solid #cbd5e1;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+    border-radius: 12px;
 }
 section[data-testid="stSidebar"] .stButton > button:hover {
-    background: linear-gradient(145deg, #f8fafc, #e2e8f0);
-    border-color: #94a3b8;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    background: #f0f5ff;
+    border-color: #2563eb;
+    box-shadow: 0 0 10px rgba(37, 99, 235, 0.15);
 }
 
-/* ------- BUTTONS (MAIN AREA) ------- */
+/* ---------- HEADINGS (InboxIQ etc.) ---------- */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Orbitron', sans-serif !important;
+    color: #2563eb !important;
+    text-shadow: 0 0 8px rgba(37, 99, 235, 0.15);
+}
+
+h1 {
+    font-size: 3.5rem !important;
+    letter-spacing: 3px;
+    text-align: center;
+}
+
+/* ---------- BUTTONS ---------- */
 .stButton > button {
-    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-    color: white;
+    background: linear-gradient(135deg, #ffffff, #f1f5f9);
+    color: #2563eb !important;
+    border: 1px solid #cbd5e1;
     border-radius: 12px;
-    border: none;
-    padding: 0.6rem 1.8rem;
     font-weight: 600;
-    letter-spacing: 0.02em;
-    transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    box-shadow: 0 6px 14px rgba(37, 99, 235, 0.25);
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 .stButton > button:hover {
-    background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
-    box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4);
-    transform: translateY(-2px);
-}
-.stButton > button:active {
-    transform: translateY(0);
-    box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3);
+    background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+    border-color: #2563eb;
+    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.2);
+    color: #1e40af !important;
+    font-weight: 700;
 }
 
-/* ------- METRICS CARDS ------- */
+/* ---------- METRICS – CENTERED VALUES ---------- */
 [data-testid="stMetric"] {
     background: #ffffff;
-    border-radius: 20px;
-    padding: 1.4rem 1.2rem;
-    box-shadow: 
-        0 8px 20px rgba(0, 0, 0, 0.04),
-        inset 0 1px 0 rgba(255,255,255,0.8);
     border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    text-align: center;                         /* center everything inside */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1.4rem 0.8rem;
 }
+
 [data-testid="stMetric"]:hover {
     transform: translateY(-3px);
-    box-shadow: 
-        0 14px 28px rgba(0,0,0,0.07),
-        inset 0 1px 0 rgba(255,255,255,0.9);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.07);
 }
+
 [data-testid="stMetric"] label {
     font-size: 0.85rem;
     font-weight: 600;
     color: #475569 !important;
     text-transform: uppercase;
     letter-spacing: 0.04em;
+    margin-bottom: 4px;
+    text-align: center;
+    width: 100%;
 }
+
 [data-testid="stMetricValue"] {
     font-weight: 700;
     font-size: 2rem;
     color: #0f172a;
+    text-align: center;
+    width: 100%;
+    white-space: nowrap;                        /* prevents overflow */
 }
 
-/* ------- EXPANDER (TICKET CARDS) ------- */
-[data-testid="stExpander"] {
-    background: #ffffff;
-    border-radius: 20px;
-    border: 1px solid #e2e8f0;
-    box-shadow: 
-        0 8px 24px rgba(0,0,0,0.05),
-        0 0 0 1px rgba(148, 163, 184, 0.05);
-    margin-bottom: 1.5rem;
-    border-left: 8px solid #2563eb;
-    transition: all 0.2s ease;
-}
-[data-testid="stExpander"]:hover {
-    box-shadow: 
-        0 12px 30px rgba(0,0,0,0.1),
-        0 0 0 1px rgba(148,163,184,0.15);
-    border-left-color: #1d4ed8;
-}
+/* ---------- EXPANDER (ticket cards) ---------- */
 .streamlit-expanderHeader {
-    font-weight: 700;
-    font-size: 1rem;
-    color: #0f172a;
-    padding: 1rem 1.2rem;
-    border-radius: 20px 20px 0 0;
-    background: linear-gradient(to bottom, #fafbfc 0%, #ffffff 100%);
+    background: linear-gradient(to bottom, #fafbfc, #ffffff);
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    font-weight: 600;
+    color: #2563eb !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
 }
-.streamlit-expanderHeader > p {
-    font-weight: 700;
+.streamlit-expanderHeader:hover {
+    border-color: #2563eb;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
 }
 
-/* ------- URGENCY BADGES (HIGH, MEDIUM, LOW) ------- */
+[data-testid="stExpander"] {
+    background: transparent;
+    border-left: 5px solid #2563eb;
+    margin-bottom: 1rem;
+}
+
+/* ---------- URGENCY BADGES ---------- */
 .high {
     color: #ffffff;
     background: #dc2626;
     font-weight: 600;
     font-size: 0.75rem;
-    padding: 3px 14px;
+    padding: 2px 12px;
     border-radius: 30px;
     display: inline-block;
     box-shadow: 0 2px 6px rgba(220, 38, 38, 0.3);
-    letter-spacing: 0.03em;
-    margin-left: 4px;
+    letter-spacing: 0.02em;
     border: 1px solid rgba(255,255,255,0.2);
 }
 .medium {
@@ -153,12 +161,11 @@ section[data-testid="stSidebar"] .stButton > button:hover {
     background: #d97706;
     font-weight: 600;
     font-size: 0.75rem;
-    padding: 3px 14px;
+    padding: 2px 12px;
     border-radius: 30px;
     display: inline-block;
     box-shadow: 0 2px 6px rgba(217, 119, 6, 0.3);
-    letter-spacing: 0.03em;
-    margin-left: 4px;
+    letter-spacing: 0.02em;
     border: 1px solid rgba(255,255,255,0.2);
 }
 .low {
@@ -166,36 +173,29 @@ section[data-testid="stSidebar"] .stButton > button:hover {
     background: #16a34a;
     font-weight: 600;
     font-size: 0.75rem;
-    padding: 3px 14px;
+    padding: 2px 12px;
     border-radius: 30px;
     display: inline-block;
     box-shadow: 0 2px 6px rgba(22, 163, 74, 0.3);
-    letter-spacing: 0.03em;
-    margin-left: 4px;
+    letter-spacing: 0.02em;
     border: 1px solid rgba(255,255,255,0.2);
 }
 
-/* ------- TEXT AREAS (BODY & REPLY) ------- */
-.stTextArea textarea {
-    border-radius: 14px;
-    border: 1px solid #cbd5e1;
-    background: #f8fafc;
-    font-size: 0.9rem;
-    padding: 1rem;
-    color: #1e293b;
-    transition: all 0.2s;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+/* ---------- TEXT AREAS ---------- */
+textarea {
+    background: #f8fafc !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 10px !important;
+    color: #1e293b !important;
+    font-family: 'Inter', monospace !important;
 }
-.stTextArea textarea:focus {
-    outline: none;
-    border-color: #2563eb;
-    box-shadow: 
-        0 0 0 3px rgba(37, 99, 235, 0.15),
-        inset 0 2px 4px rgba(0,0,0,0.02);
-    background: #ffffff;
+textarea:disabled {
+    background: #f1f5f9 !important;
+    border-color: #e2e8f0 !important;
+    color: #64748b !important;
 }
 
-/* ------- TABS ------- */
+/* ---------- TABS ---------- */
 .stTabs [data-baseweb="tab-list"] {
     gap: 2rem;
     border-bottom: 2px solid #e2e8f0;
@@ -203,31 +203,35 @@ section[data-testid="stSidebar"] .stButton > button:hover {
 .stTabs [data-baseweb="tab"] {
     font-weight: 600;
     color: #475569;
-    padding: 0.8rem 1rem;
     border-radius: 12px 12px 0 0;
-    transition: all 0.2s;
 }
 .stTabs [aria-selected="true"] {
     color: #2563eb !important;
-    background: rgba(37, 99, 235, 0.06);
+    background: rgba(37, 99, 235, 0.04);
     border-bottom: 3px solid #2563eb;
 }
 
-/* ------- SIDEBAR INPUTS ------- */
-[data-testid="stSidebar"] .stTextInput input,
-[data-testid="stSidebar"] .stSelectbox div[data-baseweb="select"] {
-    background: rgba(255,255,255,0.8);
+/* ---------- INPUTS / SELECTS ---------- */
+.stTextInput input,
+.stSelectbox div[data-baseweb="select"] > div {
+    background: rgba(255, 255, 255, 0.8);
     border: 1px solid #cbd5e1;
     border-radius: 10px;
-    transition: all 0.2s;
+    color: #1e293b;
 }
-[data-testid="stSidebar"] .stTextInput input:focus,
-[data-testid="stSidebar"] .stSelectbox:focus-within div[data-baseweb="select"] {
+.stTextInput input:focus,
+.stSelectbox:focus-within div[data-baseweb="select"] > div {
     border-color: #2563eb;
-    box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
-/* ------- CHARTS CONTAINER ------- */
+/* ---------- PROGRESS BAR ---------- */
+.stProgress > div > div {
+    background: linear-gradient(90deg, #2563eb, #7c3aed);
+    border-radius: 20px;
+}
+
+/* ---------- CHARTS ---------- */
 [data-testid="stPlotlyChart"] {
     background: #ffffff;
     border-radius: 16px;
@@ -236,31 +240,22 @@ section[data-testid="stSidebar"] .stButton > button:hover {
     padding: 0.5rem;
 }
 
-/* ------- FOOTER / CAPTION ------- */
+/* ---------- FOOTER / CAPTION ---------- */
 .stCaption {
     color: #64748b !important;
-    font-weight: 500;
-    letter-spacing: 0.02em;
 }
 
-/* ------- HORIZONTAL DIVIDER ------- */
+/* ---------- HORIZONTAL LINE ---------- */
 hr {
     border: none;
     height: 1px;
     background: linear-gradient(to right, #cbd5e1 0%, transparent 100%);
-    margin: 1.5rem 0;
 }
 
-/* ------- PROGRESS BAR ------- */
-.stProgress > div > div {
-    background: linear-gradient(90deg, #2563eb, #7c3aed);
-    border-radius: 20px;
-}
-
-/* ------- SUCCESS/WARNING/INFO BOXES ------- */
+/* ---------- ALERTS ---------- */
 div[data-testid="stAlert"] {
     border-radius: 14px;
-    border: 1px solid;
-    padding: 1rem 1.2rem;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    border: 1px solid #e2e8f0;
+    background: rgba(255, 255, 255, 0.7);
+    color: #1e293b;
 }
