@@ -27,7 +27,7 @@ def authenticate_user():
 
     auth_url, state = flow.authorization_url(
         prompt="consent",
-        access_type="offline"
+        access_type="offline",
         include_granted_scopes="true"
     )
 
