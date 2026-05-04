@@ -27,15 +27,11 @@ def authenticate_user():
         redirect_uri=st.secrets["REDIRECT_URI"]
     )
 
-    auth_url, state = flow.authorization_url(
+    auth_url, _ = flow.authorization_url(
         access_type="offline",
         prompt="consent",
         include_granted_scopes="true"
     )
-
-    # Store verifier + state
-    st.session_state["oauth_state"] = state
-    st.session_state["code_verifier"] = flow.code_verifier
 
     return auth_url
 def get_user_credentials(auth_code):
@@ -50,13 +46,11 @@ def get_user_credentials(auth_code):
             }
         },
         scopes=SCOPES,
-        state=st.session_state.get("oauth_state"),
         redirect_uri=st.secrets["REDIRECT_URI"]
     )
 
     flow.fetch_token(
-        code=auth_code,
-        code_verifier=st.session_state["code_verifier"]
+        code=auth_code
     )
 
     return flow.credentials
