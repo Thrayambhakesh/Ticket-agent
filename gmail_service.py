@@ -66,7 +66,14 @@ def get_gmail_service(credentials=None):
         credentials.refresh(Request())
 
     return build("gmail", "v1", credentials=credentials)
+def get_user_email(credentials):
+    service = get_gmail_service(credentials)
 
+    profile = service.users().getProfile(
+        userId="me"
+    ).execute()
+
+    return profile["emailAddress"]
 
 # ---------------- FETCH EMAILS ----------------
 def fetch_unread_emails(credentials):
