@@ -28,10 +28,8 @@ def authenticate_user():
     auth_url, state = flow.authorization_url(
         prompt="consent",
         access_type="offline"
+        include_granted_scopes="true"
     )
-
-    st.session_state["oauth_state"] = state
-    st.session_state["code_verifier"] = flow.code_verifier
 
     return auth_url
 
@@ -51,7 +49,7 @@ def get_user_credentials(auth_code):
 
     flow.fetch_token(
         code=auth_code,
-        code_verifier=st.session_state["code_verifier"]
+        client_secret=st.secrets["GOOGLE_CLIENT_SECRET"]
     )
 
     return flow.credentials
