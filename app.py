@@ -3,7 +3,6 @@ import pandas as pd
 from gmail_service import authenticate_user, get_user_credentials
 from gmail_service import (
     fetch_unread_emails,
-    get_user_email,
     send_email,
     archive_email,
     delete_email,
@@ -40,7 +39,7 @@ elif "code" in query_params:
         code = query_params["code"]
         creds = get_user_credentials(code)
         st.session_state.gmail_creds = creds
-        st.session_state.user_email = get_user_email(creds)
+        
         # Clear URL params after successful login
         st.query_params.clear()
 
@@ -113,7 +112,7 @@ if fetch_button:
 
                     ticket_data = {
                         "gmail_id": email["id"],
-                        "user_email": st.session_state.user_email,
+                        "user_email": st.session_state.gmail_creds.id_token["email"],
                         "sender": email["sender"],
                         "subject": email["subject"],
                         "body": email["body"][:1500],
@@ -133,7 +132,7 @@ if fetch_button:
 
 # ---------------- LOAD TICKETS ----------------
 try:
-    response = get_tickets(st.session_state.user_email)
+    response = get_tickets(st.session_state.gmail_creds.id_token["email"])
     tickets = response.data
 except Exception as e:
     st.error(f"Supabase Error: {str(e)}")
