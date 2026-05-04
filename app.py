@@ -37,11 +37,16 @@ if "code" not in query_params:
     st.stop()
 
 if "gmail_creds" not in st.session_state:
-    code = query_params["code"]
-    creds = get_user_credentials(code)
-    st.session_state.gmail_creds = creds
-    st.query_params.clear()
-    st.rerun()
+    try:
+        code = query_params["code"]
+        creds = get_user_credentials(code)
+        st.session_state.gmail_creds = creds
+        st.query_params.clear()
+        st.rerun()
+    except Exception as e:
+        st.error(f"Authentication failed: {str(e)}")
+        st.session_state.clear()
+        st.stop()
 
 # ---------------- HEADER ----------------
 st.title("InboxIQ")

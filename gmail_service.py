@@ -18,7 +18,8 @@ def authenticate_user():
                 "client_id": st.secrets["GOOGLE_CLIENT_ID"],
                 "client_secret": st.secrets["GOOGLE_CLIENT_SECRET"],
                 "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-                "token_uri": "https://oauth2.googleapis.com/token"
+                "token_uri": "https://oauth2.googleapis.com/token",
+                "redirect_uris": [st.secrets["REDIRECT_URI"]],
             }
         },
         scopes=SCOPES,
@@ -26,34 +27,35 @@ def authenticate_user():
     )
 
     auth_url, state = flow.authorization_url(
-        prompt="consent",
         access_type="offline",
+        prompt="consent",
         include_granted_scopes="true"
     )
 
-    return auth_url
+    st.session_state["oauth_state"] = state
 
+    return auth_url
 def get_user_credentials(auth_code):
     flow = Flow.from_client_config(
         {
             "web": {
                 "client_id": st.secrets["GOOGLE_CLIENT_ID"],
-                "client_secret": st.secrets["GOOGLE_CLIENT_SECRET"],
+                "client_secret": st.serets["GOOGLE_CLIENT_SECRET"],
                 "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-                "token_uri": "https://oauth2.googleapis.com/token"
+                "token_uri": "https://oauth2.googleapis.com/token",
+                "redirect_uris": [st.secrets["REDIRECT_URI"]],
             }
         },
         scopes=SCOPES,
+        state=st.session_state.get("oauth_state"),
         redirect_uri=st.secrets["REDIRECT_URI"]
     )
 
     flow.fetch_token(
-        code=auth_code,
-        client_secret=st.secrets["GOOGLE_CLIENT_SECRET"]
+        code=auth_code
     )
 
     return flow.credentials
-
 # ---------------- GMAIL SERVICE ----------------
 def get_gmail_service(credentials=None):
     if credentials and credentials.expired and credentials.refresh_token:
