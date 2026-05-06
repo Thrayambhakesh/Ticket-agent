@@ -41,8 +41,8 @@
 .stApp[data-theme="dark"],
 @media (prefers-color-scheme: dark) {
     :root {
-        --bg-main:        #0f172a;
-        --bg-card:        #1e293b;
+        --bg-main:   #0a0f1e;   
+        --bg-card:   #161f33;   
         --bg-sidebar:     rgba(15,23,42,0.92);
         --bg-input:       rgba(30,41,59,0.9);
         --bg-textarea:    #1e293b;
@@ -219,11 +219,38 @@ h1 {
     border-color: var(--accent);
     box-shadow: 0 4px 12px var(--accent-glow);
 }
+/* REPLACE WITH */
 [data-testid="stExpander"] {
     background: var(--bg-card) !important;
     border-left: 5px solid var(--accent);
     border-radius: 8px;
     margin-bottom: 1rem;
+    color: var(--text-primary) !important;
+}
+
+/* Force ALL expander text to be visible */
+[data-testid="stExpander"] * {
+    color: var(--text-primary) !important;
+}
+
+/* Expander header specifically */
+[data-testid="stExpander"] summary,
+[data-testid="stExpander"] summary *,
+[data-testid="stExpander"] [data-testid="stExpanderToggleIcon"] {
+    color: var(--accent) !important;
+}
+
+/* Main content area background */
+[data-testid="stMainBlockContainer"],
+[data-testid="block-container"],
+.main .block-container {
+    background: var(--bg-main) !important;
+    color: var(--text-primary) !important;
+}
+
+/* Every text element globally */
+p, span, div, label, li, td, th {
+    color: var(--text-primary);
 }
 
 /* ============================================================
@@ -382,4 +409,68 @@ hr {
    ============================================================ */
 .stCheckbox label span {
     color: var(--text-secondary) !important;
+}
+
+/* ============================================================
+   NUCLEAR DARK MODE OVERRIDE — targets Streamlit's own wrappers
+   ============================================================ */
+[data-theme="dark"] .stApp,
+[data-theme="dark"] [data-testid="stMainBlockContainer"],
+[data-theme="dark"] [data-testid="stAppViewContainer"] {
+    background-color: #0a0f1e !important;
+    color: #e2e8f0 !important;
+}
+
+[data-theme="dark"] [data-testid="stExpander"],
+[data-theme="dark"] .streamlit-expanderHeader {
+    background-color: #161f33 !important;
+    color: #e2e8f0 !important;
+}
+
+[data-theme="dark"] [data-testid="stExpander"] p,
+[data-theme="dark"] [data-testid="stExpander"] span,
+[data-theme="dark"] [data-testid="stExpander"] div,
+[data-theme="dark"] [data-testid="stExpander"] label {
+    color: #e2e8f0 !important;
+}
+
+[data-theme="dark"] [data-testid="stMetric"] {
+    background-color: #161f33 !important;
+}
+
+[data-theme="dark"] textarea {
+    background-color: #1e293b !important;
+    color: #e2e8f0 !important;
+}
+
+/* ============================================================
+   NUCLEAR DARK MODE OVERRIDE — targets Streamlit's own wrappers
+   ============================================================ */
+[data-theme="dark"] .stApp,
+[data-theme="dark"] [data-testid="stMainBlockContainer"],
+[data-theme="dark"] [data-testid="stAppViewContainer"] {
+    background-color: #0a0f1e !important;
+    color: #e2e8f0 !important;
+}
+
+[data-theme="dark"] [data-testid="stExpander"],
+[data-theme="dark"] .streamlit-expanderHeader {
+    background-color: #161f33 !important;
+    color: #e2e8f0 !important;
+}
+
+[data-theme="dark"] [data-testid="stExpander"] p,
+[data-theme="dark"] [data-testid="stExpander"] span,
+[data-theme="dark"] [data-testid="stExpander"] div,
+[data-theme="dark"] [data-testid="stExpander"] label {
+    color: #e2e8f0 !important;
+}
+
+[data-theme="dark"] [data-testid="stMetric"] {
+    background-color: #161f33 !important;
+}
+
+[data-theme="dark"] textarea {
+    background-color: #1e293b !important;
+    color: #e2e8f0 !important;
 }
