@@ -67,6 +67,9 @@ st.sidebar.title("Control Panel")
 
 fetch_button = st.sidebar.button("Fetch Last 10 Emails")
 refresh_button = st.sidebar.button("Refresh Dashboard")
+if refresh_button:
+    st.cache_data.clear()
+    st.rerun()
 if st.sidebar.button("Logout"):
     st.session_state.clear()
     st.query_params.clear()
@@ -269,13 +272,35 @@ with tab2:
         urgency_counts = df["urgency"].value_counts().reset_index()
         urgency_counts.columns = ["Urgency", "Count"]
 
+        # REPLACE WITH
         fig2 = px.pie(
             urgency_counts,
             names="Urgency",
             values="Count",
-            title="Urgency Distribution"
+            title="Urgency Distribution",
+            color="Urgency",
+            color_discrete_map={
+        "high": "#dc2626",
+        "medium": "#d97706",
+        "low": "#16a34a"
+    }
+)
+        fig2.update_layout(
+            legend=dict(
+            orientation="h",        # horizontal legend
+            yanchor="bottom",
+            y=-0.2,                 # push it below the chart
+            xanchor="center",
+            x=0.5
+        ),
+        margin=dict(t=50, b=80, l=20, r=20),  # give bottom room for legend
+        height=380
         )
-        st.plotly_chart(fig2, width="stretch")
+        fig2.update_traces(
+            textposition="inside",
+            textinfo="percent+label"    # show label inside slice, not outside
+        )
+        st.plotly_chart(fig2, use_container_width=True)
 
         # Daily Trends
         if "created_at" in df.columns:
