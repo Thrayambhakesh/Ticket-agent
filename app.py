@@ -37,14 +37,11 @@ if "gmail_creds" in st.session_state:
 elif "code" in query_params:
     try:
         code = query_params["code"]
-        creds = get_user_credentials(code)
+        raw_state = query_params.get("state", "")          # ← grab state from URL
+        creds = get_user_credentials(code, raw_state)      # ← pass it in
         st.session_state.gmail_creds = creds
-
-        # Clear URL params after successful login
         st.query_params.clear()
-
         st.rerun()
-
     except Exception as e:
         st.error(f"Authentication failed: {str(e)}")
         st.session_state.clear()
