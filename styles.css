@@ -1,60 +1,140 @@
 /* ---------- GOOGLE FONTS ---------- */
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@300;400;500;600;700&display=swap');
 
-/* ---------- GLOBAL ---------- */
+/* ============================================================
+   CSS VARIABLES — light defaults, dark overrides
+   ============================================================ */
+:root {
+    --bg-main:        #f8fafc;
+    --bg-card:        #ffffff;
+    --bg-sidebar:     rgba(255,255,255,0.78);
+    --bg-input:       rgba(255,255,255,0.8);
+    --bg-textarea:    #f8fafc;
+    --bg-textarea-disabled: #f1f5f9;
+
+    --text-primary:   #1e293b;
+    --text-secondary: #475569;
+    --text-muted:     #64748b;
+    --text-disabled:  #64748b;
+
+    --border:         #e2e8f0;
+    --border-input:   #cbd5e1;
+    --border-sidebar: rgba(148,163,184,0.3);
+
+    --accent:         #2563eb;
+    --accent-hover:   #1e40af;
+    --accent-glow:    rgba(37,99,235,0.2);
+    --accent-subtle:  rgba(37,99,235,0.04);
+
+    --shadow-card:    0 6px 20px rgba(0,0,0,0.04);
+    --shadow-hover:   0 12px 24px rgba(0,0,0,0.07);
+    --shadow-btn:     0 2px 8px rgba(0,0,0,0.05);
+
+    --btn-bg:         linear-gradient(135deg,#ffffff,#f1f5f9);
+    --btn-bg-hover:   linear-gradient(135deg,#f8fafc,#e2e8f0);
+
+    --metric-value:   #0f172a;
+}
+
+/* Dark mode overrides — triggers on Streamlit's dark theme toggle */
+[data-theme="dark"],
+.stApp[data-theme="dark"],
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-main:        #0f172a;
+        --bg-card:        #1e293b;
+        --bg-sidebar:     rgba(15,23,42,0.92);
+        --bg-input:       rgba(30,41,59,0.9);
+        --bg-textarea:    #1e293b;
+        --bg-textarea-disabled: #162032;
+
+        --text-primary:   #e2e8f0;
+        --text-secondary: #94a3b8;
+        --text-muted:     #64748b;
+        --text-disabled:  #475569;
+
+        --border:         #334155;
+        --border-input:   #475569;
+        --border-sidebar: rgba(51,65,85,0.6);
+
+        --accent:         #3b82f6;
+        --accent-hover:   #60a5fa;
+        --accent-glow:    rgba(59,130,246,0.25);
+        --accent-subtle:  rgba(59,130,246,0.08);
+
+        --shadow-card:    0 6px 20px rgba(0,0,0,0.3);
+        --shadow-hover:   0 12px 24px rgba(0,0,0,0.4);
+        --shadow-btn:     0 2px 8px rgba(0,0,0,0.3);
+
+        --btn-bg:         linear-gradient(135deg,#1e293b,#162032);
+        --btn-bg-hover:   linear-gradient(135deg,#263348,#1e293b);
+
+        --metric-value:   #f1f5f9;
+    }
+}
+
+/* ============================================================
+   GLOBAL
+   ============================================================ */
 html, body, [class*="css"] {
     font-family: 'Inter', sans-serif !important;
-    color: #1e293b;
+    color: var(--text-primary);
     letter-spacing: -0.01em;
 }
 
 .stApp {
-    background: 
-        radial-gradient(ellipse at 20% 50%, rgba(37, 99, 235, 0.05) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 20%, rgba(56, 189, 248, 0.06) 0%, transparent 50%),
-        linear-gradient(135deg, #f8fafc 0%, #eef2ff 30%, #f1f5f9 70%, #ffffff 100%);
+    background:
+        radial-gradient(ellipse at 20% 50%, var(--accent-glow) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(56,189,248,0.06) 0%, transparent 50%),
+        var(--bg-main);
     background-attachment: fixed;
 }
 
-/* ---------- SIDEBAR ---------- */
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
 section[data-testid="stSidebar"] {
-    background: rgba(255, 255, 255, 0.78);
+    background: var(--bg-sidebar) !important;
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border-right: 1px solid rgba(148, 163, 184, 0.3);
-    box-shadow: 4px 0 30px rgba(0, 0, 0, 0.04);
+    border-right: 1px solid var(--border-sidebar);
+    box-shadow: 4px 0 30px rgba(0,0,0,0.1);
 }
 
 section[data-testid="stSidebar"] h1,
 section[data-testid="stSidebar"] h2,
 section[data-testid="stSidebar"] h3 {
-    color: #2563eb !important;
+    color: var(--accent) !important;
     font-family: 'Orbitron', sans-serif;
-    text-shadow: 0 0 10px rgba(37, 99, 235, 0.2);
+    text-shadow: 0 0 10px var(--accent-glow);
     text-align: center;
 }
 
-section[data-testid="stSidebar"] label {
-    color: #334155 !important;
+section[data-testid="stSidebar"] label,
+section[data-testid="stSidebar"] p,
+section[data-testid="stSidebar"] span {
+    color: var(--text-secondary) !important;
 }
 
 section[data-testid="stSidebar"] .stButton > button {
-    background: #ffffff;
-    color: #2563eb !important;
-    border: 1px solid #cbd5e1;
+    background: var(--btn-bg);
+    color: var(--accent) !important;
+    border: 1px solid var(--border-input);
     border-radius: 12px;
 }
 section[data-testid="stSidebar"] .stButton > button:hover {
-    background: #f0f5ff;
-    border-color: #2563eb;
-    box-shadow: 0 0 10px rgba(37, 99, 235, 0.15);
+    background: var(--btn-bg-hover);
+    border-color: var(--accent);
+    box-shadow: 0 0 10px var(--accent-glow);
 }
 
-/* ---------- HEADINGS (InboxIQ etc.) ---------- */
+/* ============================================================
+   HEADINGS
+   ============================================================ */
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Orbitron', sans-serif !important;
-    color: #2563eb !important;
-    text-shadow: 0 0 8px rgba(37, 99, 235, 0.15);
+    color: var(--accent) !important;
+    text-shadow: 0 0 8px var(--accent-glow);
 }
 
 h1 {
@@ -63,87 +143,92 @@ h1 {
     text-align: center;
 }
 
-/* ---------- BUTTONS ---------- */
+/* ============================================================
+   BUTTONS
+   ============================================================ */
 .stButton > button {
-    background: linear-gradient(135deg, #ffffff, #f1f5f9);
-    color: #2563eb !important;
-    border: 1px solid #cbd5e1;
+    background: var(--btn-bg);
+    color: var(--accent) !important;
+    border: 1px solid var(--border-input);
     border-radius: 12px;
     font-weight: 600;
     letter-spacing: 0.6px;
     text-transform: uppercase;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    box-shadow: var(--shadow-btn);
 }
 .stButton > button:hover {
-    background: linear-gradient(135deg, #f8fafc, #e2e8f0);
-    border-color: #2563eb;
-    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.2);
-    color: #1e40af !important;
+    background: var(--btn-bg-hover);
+    border-color: var(--accent);
+    box-shadow: 0 4px 16px var(--accent-glow);
+    color: var(--accent-hover) !important;
     font-weight: 700;
 }
 
-/* ---------- METRICS – CENTERED VALUES ---------- */
+/* ============================================================
+   METRICS
+   ============================================================ */
 [data-testid="stMetric"] {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
+    background: var(--bg-card) !important;
+    border: 1px solid var(--border);
     border-radius: 20px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+    box-shadow: var(--shadow-card);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-    text-align: center;                         /* center everything inside */
+    text-align: center;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 1.4rem 0.8rem;
 }
-
 [data-testid="stMetric"]:hover {
     transform: translateY(-3px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.07);
+    box-shadow: var(--shadow-hover);
 }
-
 [data-testid="stMetric"] label {
     font-size: 0.85rem;
     font-weight: 600;
-    color: #475569 !important;
+    color: var(--text-secondary) !important;
     text-transform: uppercase;
     letter-spacing: 0.04em;
     margin-bottom: 4px;
     text-align: center;
     width: 100%;
 }
-
 [data-testid="stMetricValue"] {
     font-weight: 700;
     font-size: 2rem;
-    color: #0f172a;
+    color: var(--metric-value) !important;
     text-align: center;
     width: 100%;
-    white-space: nowrap;                        /* prevents overflow */
+    white-space: nowrap;
 }
 
-/* ---------- EXPANDER (ticket cards) ---------- */
+/* ============================================================
+   EXPANDER / TICKET CARDS
+   ============================================================ */
 .streamlit-expanderHeader {
-    background: linear-gradient(to bottom, #fafbfc, #ffffff);
-    border: 1px solid #e2e8f0;
+    background: var(--bg-card) !important;
+    border: 1px solid var(--border);
     border-radius: 16px;
     font-weight: 600;
-    color: #2563eb !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    color: var(--accent) !important;
+    box-shadow: var(--shadow-btn);
 }
 .streamlit-expanderHeader:hover {
-    border-color: #2563eb;
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+    border-color: var(--accent);
+    box-shadow: 0 4px 12px var(--accent-glow);
 }
-
 [data-testid="stExpander"] {
-    background: transparent;
-    border-left: 5px solid #2563eb;
+    background: var(--bg-card) !important;
+    border-left: 5px solid var(--accent);
+    border-radius: 8px;
     margin-bottom: 1rem;
 }
 
-/* ---------- URGENCY BADGES ---------- */
+/* ============================================================
+   URGENCY BADGES
+   ============================================================ */
 .high {
     color: #ffffff;
     background: #dc2626;
@@ -152,9 +237,8 @@ h1 {
     padding: 2px 12px;
     border-radius: 30px;
     display: inline-block;
-    box-shadow: 0 2px 6px rgba(220, 38, 38, 0.3);
+    box-shadow: 0 2px 6px rgba(220,38,38,0.4);
     letter-spacing: 0.02em;
-    border: 1px solid rgba(255,255,255,0.2);
 }
 .medium {
     color: #ffffff;
@@ -164,9 +248,8 @@ h1 {
     padding: 2px 12px;
     border-radius: 30px;
     display: inline-block;
-    box-shadow: 0 2px 6px rgba(217, 119, 6, 0.3);
+    box-shadow: 0 2px 6px rgba(217,119,6,0.4);
     letter-spacing: 0.02em;
-    border: 1px solid rgba(255,255,255,0.2);
 }
 .low {
     color: #ffffff;
@@ -176,86 +259,127 @@ h1 {
     padding: 2px 12px;
     border-radius: 30px;
     display: inline-block;
-    box-shadow: 0 2px 6px rgba(22, 163, 74, 0.3);
+    box-shadow: 0 2px 6px rgba(22,163,74,0.4);
     letter-spacing: 0.02em;
-    border: 1px solid rgba(255,255,255,0.2);
 }
 
-/* ---------- TEXT AREAS ---------- */
+/* ============================================================
+   TEXT AREAS
+   ============================================================ */
 textarea {
-    background: #f8fafc !important;
-    border: 1px solid #cbd5e1 !important;
+    background: var(--bg-textarea) !important;
+    border: 1px solid var(--border-input) !important;
     border-radius: 10px !important;
-    color: #1e293b !important;
+    color: var(--text-primary) !important;
     font-family: 'Inter', monospace !important;
 }
 textarea:disabled {
-    background: #f1f5f9 !important;
-    border-color: #e2e8f0 !important;
-    color: #64748b !important;
+    background: var(--bg-textarea-disabled) !important;
+    border-color: var(--border) !important;
+    color: var(--text-disabled) !important;
 }
 
-/* ---------- TABS ---------- */
-.stTabs [data-baseweb="tab-list"] {
-    gap: 2rem;
-    border-bottom: 2px solid #e2e8f0;
-}
-.stTabs [data-baseweb="tab"] {
-    font-weight: 600;
-    color: #475569;
-    border-radius: 12px 12px 0 0;
-}
-.stTabs [aria-selected="true"] {
-    color: #2563eb !important;
-    background: rgba(37, 99, 235, 0.04);
-    border-bottom: 3px solid #2563eb;
-}
-
-/* ---------- INPUTS / SELECTS ---------- */
+/* ============================================================
+   INPUTS & SELECTS
+   ============================================================ */
 .stTextInput input,
 .stSelectbox div[data-baseweb="select"] > div {
-    background: rgba(255, 255, 255, 0.8);
-    border: 1px solid #cbd5e1;
-    border-radius: 10px;
-    color: #1e293b;
+    background: var(--bg-input) !important;
+    border: 1px solid var(--border-input) !important;
+    border-radius: 10px !important;
+    color: var(--text-primary) !important;
 }
 .stTextInput input:focus,
 .stSelectbox:focus-within div[data-baseweb="select"] > div {
-    border-color: #2563eb;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 0 3px var(--accent-glow) !important;
 }
 
-/* ---------- PROGRESS BAR ---------- */
+/* Dropdown menu options */
+[data-baseweb="menu"] {
+    background: var(--bg-card) !important;
+    border: 1px solid var(--border) !important;
+}
+[data-baseweb="menu"] li {
+    color: var(--text-primary) !important;
+}
+[data-baseweb="menu"] li:hover {
+    background: var(--accent-subtle) !important;
+}
+
+/* ============================================================
+   TABS
+   ============================================================ */
+.stTabs [data-baseweb="tab-list"] {
+    gap: 2rem;
+    border-bottom: 2px solid var(--border);
+    background: transparent !important;
+}
+.stTabs [data-baseweb="tab"] {
+    font-weight: 600;
+    color: var(--text-secondary);
+    background: transparent !important;
+}
+.stTabs [aria-selected="true"] {
+    color: var(--accent) !important;
+    background: var(--accent-subtle) !important;
+    border-bottom: 3px solid var(--accent);
+}
+
+/* ============================================================
+   PROGRESS BAR
+   ============================================================ */
 .stProgress > div > div {
-    background: linear-gradient(90deg, #2563eb, #7c3aed);
+    background: linear-gradient(90deg, var(--accent), #7c3aed);
     border-radius: 20px;
 }
 
-/* ---------- CHARTS ---------- */
+/* ============================================================
+   CHARTS
+   ============================================================ */
 [data-testid="stPlotlyChart"] {
-    background: #ffffff;
+    background: var(--bg-card) !important;
     border-radius: 16px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.04);
-    border: 1px solid #e2e8f0;
+    box-shadow: var(--shadow-card);
+    border: 1px solid var(--border);
     padding: 0.5rem;
 }
 
-/* ---------- FOOTER / CAPTION ---------- */
-.stCaption {
-    color: #64748b !important;
+/* ============================================================
+   ALERTS
+   ============================================================ */
+div[data-testid="stAlert"] {
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    background: var(--bg-card) !important;
+    color: var(--text-primary) !important;
 }
 
-/* ---------- HORIZONTAL LINE ---------- */
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.stCaption {
+    color: var(--text-muted) !important;
+}
+
 hr {
     border: none;
     height: 1px;
-    background: linear-gradient(to right, #cbd5e1 0%, transparent 100%);
+    background: linear-gradient(to right, var(--border) 0%, transparent 100%);
 }
 
-/* ---------- ALERTS ---------- */
-div[data-testid="stAlert"] {
-    border-radius: 14px;
-    border: 1px solid #e2e8f0;
-    background: rgba(255, 255, 255, 0.7);
-    color: #1e293b;
+/* ============================================================
+   MARKDOWN TEXT — ensure readable in both modes
+   ============================================================ */
+.stMarkdown p,
+.stMarkdown span,
+.stMarkdown li {
+    color: var(--text-primary) !important;
+}
+
+/* ============================================================
+   CHECKBOX
+   ============================================================ */
+.stCheckbox label span {
+    color: var(--text-secondary) !important;
 }
