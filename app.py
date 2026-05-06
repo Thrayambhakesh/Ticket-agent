@@ -23,17 +23,7 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
-# Force Streamlit to expose its theme as a data-theme attribute on stApp
-st.markdown("""
-    <script>
-        const observer = new MutationObserver(() => {
-            const theme = document.documentElement.getAttribute('data-theme') || 
-                        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-            document.querySelector('.stApp')?.setAttribute('data-theme', theme);
-        });
-        observer.observe(document.documentElement, { attributes: true });
-    </script>
-""", unsafe_allow_html=True)
+
 # ---------------- CUSTOM CSS ----------------
 # Load external CSS
 with open("styles.css") as f:
