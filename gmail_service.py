@@ -160,15 +160,7 @@ def delete_email(service, msg_id):
     service.users().messages().trash(userId="me", id=msg_id).execute()
     
 def get_user_email(credentials):
-    """Decode the id_token to extract the user's email."""
-    import json, base64
-    # id_token is a JWT; decode the payload (middle part)
-    token = credentials.id_token
-    if isinstance(token, dict):
-        return token.get("email", "")
-    # It's a raw JWT string — decode the payload
-    payload = token.split(".")[1]
-    # Add padding if needed
-    payload += "=" * (4 - len(payload) % 4)
-    decoded = json.loads(base64.urlsafe_b64decode(payload))
-    return decoded.get("email", "")
+    """Fetch the authenticated user's email via Gmail API."""
+    service = get_gmail_service(credentials)
+    profile = service.users().getProfile(userId="me").execute()
+    return profile["emailAddress"]

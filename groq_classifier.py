@@ -116,7 +116,21 @@ Emails:
 
     content = response.choices[0].message.content
 
+    content = content.strip()
+    if content.startswith("```"):
+        content = content.split("```")[1]
+        if content.startswith("json"):
+            content = content[4:]
+    content = content.strip()
+
     try:
-        return json.loads(content)
-    except:
-        return []
+        result = json.loads(content)
+        # Ensure it's a list with one entry per email
+        if isinstance(result, list) and len(result) == len(emails):
+            return result
+        raise ValueError("Length mismatch")
+    except Exception:
+        # Fallback: classify each email individually
+        return [classify_and_generate(
+            f"Subject: {e['subject']}\n{e['body'][:800]}"
+        ) for e in emails]
